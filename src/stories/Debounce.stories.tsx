@@ -31,16 +31,18 @@ export const Default: Story = () => {
 
 export const WithLodashDebounce: Story = () => {
   const [value, setValue] = React.useState<string>('')
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value)
-  }
+  const debouncedOnChange =
+    lodashDebounce(
+      (event: React.ChangeEvent<HTMLInputElement>) => {
+        setValue(event.target.value)
+      }, 1000)
 
-  return <Input value={value} onChange={lodashDebounce(onChange, 1000)} />
+  return <Input value={value} onChange={debouncedOnChange} />
 }
 
 export const WithCustomDebounce: Story = () => {
   const [value, setValue] = React.useState<string>('')
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const debouncedOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     debounce(
       () => {
         setValue(event.target.value)
@@ -48,5 +50,5 @@ export const WithCustomDebounce: Story = () => {
     )
   }
 
-  return <Input value={value} onChange={onChange} />
+  return <Input value={value} onChange={debouncedOnChange} />
 }
